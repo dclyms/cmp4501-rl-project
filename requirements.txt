@@ -1,0 +1,7 @@
+stable-baselines3[extra]==2.8.0
+highway-env
+gymnasium
+torch
+matplotlib
+imageio
+numpy
