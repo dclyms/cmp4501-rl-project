@@ -1,7 +1,7 @@
 # Autonomous Driving with Highway-Env
 **Student:** Dicle | **Course:** CMP4501 | **Track:** Option A
 
-![Training Evolution](src/assets/evolution.gif)
+![Training Evolution](assets/evolution.gif)
 
 ---
 
@@ -74,6 +74,7 @@ rl-project/
 │   ├── evaluate.py
 │   ├── model.py
 │   ├── utils.py
+│   ├── combine.py
 │   └── config.py
 ├── assets/
 │   └── reward_plot.png

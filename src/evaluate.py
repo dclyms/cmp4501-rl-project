@@ -7,9 +7,9 @@ from config import CONFIG
 
 
 def record_agent(model_path: str, output_path: str, steps: int = 150) -> None:
-    """Record a GIF of the agent at a given checkpoint."""
+    # render_mode="rgb_array" is needed on Windows since the display window doesn't work
     env = gym.make(CONFIG["env_id"], render_mode="rgb_array")
-    
+
     if model_path == "random":
         model = None
     else:
@@ -34,10 +34,9 @@ def record_agent(model_path: str, output_path: str, steps: int = 150) -> None:
 
 
 def evaluate() -> None:
-    """Record all three stages of training."""
-    record_agent("random",                          "assets/stage1_untrained.gif")
-    record_agent("checkpoints/untrained",           "assets/stage2_half.gif")
-    record_agent("checkpoints/trained",             "assets/stage3_trained.gif")
+    record_agent("random",                   "assets/stage1_untrained.gif")
+    record_agent("checkpoints/half_trained", "assets/stage2_half.gif")
+    record_agent("checkpoints/trained",      "assets/stage3_trained.gif")
 
 
 if __name__ == "__main__":

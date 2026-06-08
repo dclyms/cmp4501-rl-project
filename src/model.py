@@ -1,11 +1,11 @@
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_util import make_vec_env
+from stable_baselines3.common.vec_env import VecEnv
 import highway_env
 from config import CONFIG, ENV_CONFIG
 
 
-def make_env() -> object:
-    """Create and configure the highway environment."""
+def make_env() -> VecEnv:
     env = make_vec_env(
         CONFIG["env_id"],
         n_envs=4,
@@ -14,8 +14,7 @@ def make_env() -> object:
     return env
 
 
-def create_model(env: object) -> PPO:
-    """Create a PPO model with configured hyperparameters."""
+def create_model(env: VecEnv) -> PPO:
     model = PPO(
         "MlpPolicy",
         env,
@@ -28,6 +27,5 @@ def create_model(env: object) -> PPO:
     return model
 
 
-def load_model(path: str, env: object) -> PPO:
-    """Load a saved PPO model from disk."""
+def load_model(path: str, env: VecEnv) -> PPO:
     return PPO.load(path, env=env)

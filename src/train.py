@@ -9,8 +9,7 @@ from config import CONFIG
 
 
 class RewardCallback(BaseCallback):
-    """Callback to track and save episode rewards during training."""
-
+    # tracks total reward per episode so we can plot it later
     def __init__(self) -> None:
         super().__init__()
         self.episode_rewards: list[float] = []
@@ -25,7 +24,6 @@ class RewardCallback(BaseCallback):
 
 
 def plot_rewards(rewards: list[float], path: str) -> None:
-    """Plot and save the reward curve."""
     plt.figure(figsize=(10, 5))
     plt.plot(rewards)
     plt.title("Training Reward over Episodes")
@@ -38,7 +36,6 @@ def plot_rewards(rewards: list[float], path: str) -> None:
 
 
 def train() -> None:
-    """Main training loop with checkpoint saving."""
     os.makedirs(CONFIG["model_dir"], exist_ok=True)
     os.makedirs(CONFIG["assets_dir"], exist_ok=True)
 
@@ -46,22 +43,17 @@ def train() -> None:
     model = create_model(env)
     callback = RewardCallback()
 
-    # Save untrained checkpoint
+    # save before any training so we can show random behavior in the video
     model.save(f"{CONFIG['model_dir']}/untrained")
-    print("Saved untrained checkpoint")
 
-    # Train to halfway
     half_steps = CONFIG["total_timesteps"] // 2
     model.learn(total_timesteps=half_steps, callback=callback)
     model.save(f"{CONFIG['model_dir']}/half_trained")
-    print("Saved half-trained checkpoint")
 
-    # Train to completion
+    # reset_num_timesteps=False continues the step counter rather than resetting
     model.learn(total_timesteps=half_steps, callback=callback, reset_num_timesteps=False)
     model.save(f"{CONFIG['model_dir']}/trained")
-    print("Saved trained checkpoint")
 
-    # Plot rewards
     plot_rewards(callback.episode_rewards, f"{CONFIG['assets_dir']}/reward_plot.png")
     env.close()
 
